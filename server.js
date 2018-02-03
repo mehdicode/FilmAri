@@ -8,6 +8,8 @@ var db = require("./models");
 
 // Create a new express app
 var app = express();
+// dot env
+require('dotenv').config();
 // Sets an initial port. We'll use this later in our listener
 var PORT = process.env.PORT || 3000;
 
