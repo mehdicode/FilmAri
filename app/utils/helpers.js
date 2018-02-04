@@ -23,6 +23,81 @@ const helpers = {
                 console.log(response);
                 return response;
             });
+    },
+    // Edit user's info
+    userData(data) {
+        console.log(data)
+        return axios.put("/api/profile", data)
+    },
+    //Find Nearby 
+    findNear(zipcode, id) {
+        const nearbyData = {
+            zipcode,
+            id
+        }
+        console.log(nearbyData)
+        return axios.post("/api/users/nearby", nearbyData)
+            .then((response) => {
+                console.log(response);
+                return response;
+            });
+    },
+
+    //Find user's matches 
+    findMatches(userid) {
+
+        return axios.get(`/api/users/matches/${userid}`);
+
+        // axios.get(`/api/users/matches/${userid}`)
+        //     .then((response) => {
+        //         console.log(response);
+        //         return response;
+        //     });
+    },
+
+    //Find a single user's match profile info
+    findMatchProfile(matchId) {
+        return axios.get(`/api/users/${matchId}`)
+    },
+
+    unmatchUser(userId, matchId) {
+        return axios.put(`/api/unmatch/${userId}/${matchId}`)
+    },
+
+    // Uploads an image to cloudinary
+    cloudinaryUpload(image) {
+        const url = "https://api.cloudinary.com/v1_1/a1s2d3f4/image/upload";
+        const uploadPreset = 'bosc3tpc';
+
+        const fd = new FormData();
+        fd.append("upload_preset", uploadPreset);
+        fd.append("file", image);
+
+        const config = {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+        };
+
+        return axios.post(url, fd, config)
+    },
+
+    // Delete an image to cloudinary (not yet working)
+    cloudinaryDelete(publicid) {
+        const url = "https://api.cloudinary.com/v1_1/a1s2d3f4/resources/image/upload?public_ids[]=" + publicid;
+
+        axios.delete(url, config)
+            .then(function(res) {
+                // File deleted successfully
+                console.log(res.data);
+            })
+            .catch(function(err) {
+                console.error('err', err);
+            });
+
+    },
+
+    matchRequest(id, matchId, request) {
+        var info = { id, matchId, request }
+        return axios.post("/api/match/post", info)
     }
 
 };
